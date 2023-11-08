@@ -1,13 +1,13 @@
 const {
   Box,
   Collapse,
-  Typography,
   Divider,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  Typography
 } = MaterialUI;
 const { useState } = React;
 
@@ -33,36 +33,21 @@ const Sidebar = (props) => {
           // sx={{ my: 2 }} 
           key={item}> {item}</Typography>
       ))}
-      <Divider textAlign="left" >General</Divider>
-      <List>
-        {props.sidebarItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton
-              sx={{ textAlign: 'center' }}
-              onClick={(e) => { handleItemClick(e) }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <List>
-        <ListItem>
-          <ListItemButton onClick={handleClick}>
-            <ListItemText primary="AWS" />
-            {open ? <Icon>expand_less</Icon> : <Icon>expand_more</Icon>}
-          </ListItemButton>
-        </ListItem>
-      </List>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }} onClick={(e) => { handleItemClick(e) }}>
+
+      {props.sidebarItems.map((item) => (
+        (item["type"] == "i" ?
+          <ListItemButton sx={{ pl: 4 }} onClick={(e) => { handleItemClick(item.component) }}>
             <ListItemIcon>
               <Icon>star</Icon>
             </ListItemIcon>
-            <ListItemText primary="About" />
-          </ListItemButton>
-        </List>
-      </Collapse>
+            <ListItemText primary={item.label} />
+          </ListItemButton> :
+          <div>
+            <Divider textAlign="left" >{item.label}</Divider>
+            <GroupNav label={item.menulabel} items={item.items} handleItemClick={handleItemClick}></GroupNav>
+          </div>
+        )
+      ))}
     </Box>
   )
 } 

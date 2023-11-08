@@ -1,4 +1,8 @@
-const { Avatar, Menu, MenuItem } = MaterialUI;
+const {
+    Avatar,
+    Menu,
+    MenuItem
+} = MaterialUI;
 
 const HeaderAvatar = (props) => {
     const [anchorEl, setAnchorEl] = useState(null)
@@ -6,7 +10,7 @@ const HeaderAvatar = (props) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleClose = (elem) => {
         setAnchorEl(null);
     };
     return (
@@ -27,8 +31,9 @@ const HeaderAvatar = (props) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={(e) => { handleClose(); window.open("https://github.com/rajalok83", '_blank').focus(); }}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>Logout</MenuItem>
             </Menu>
         </div>
     )

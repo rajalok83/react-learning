@@ -1,19 +1,19 @@
 const {
+    AppBar,
+    Box,
     colors,
-    CssBaseline,
-    ThemeProvider,
-    Typography,
     Container,
     createTheme,
-    Box,
+    CssBaseline,
     Drawer,
-    AppBar,
-    Toolbar,
     IconButton,
-    Icon
+    Icon,
+    ThemeProvider,
+    Typography,
+    Toolbar
 } = MaterialUI;
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 // const navItems = ['Home'
 //     // , 'About', 'Contact'
 // ];
@@ -30,7 +30,7 @@ const Dashboard = (props) => {
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <AppBar component="nav">
-                <Toolbar>
+                <Toolbar variant="dense">
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -47,10 +47,7 @@ const Dashboard = (props) => {
                     <Typography
                         variant="h6"
                         component="div"
-                        sx={{
-                            flexGrow: 1,
-                            display: { xs: 'none', sm: 'block' }
-                        }}
+                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                     >
                         TCO
                     </Typography>
