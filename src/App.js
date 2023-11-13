@@ -62,7 +62,7 @@ let newNavItems = [
   {
     "type": "g", "label": "AWS", "menulabel": "AWSLabel1-2", "items":
       [
-        { "type": "i", "label": "Home3", "component": "Home" },
+        { "type": "i", "label": "DynamoDB", "component": "DynamoDB" },
         { "type": "i", "label": "About3", "component": "About" },
         { "type": "i", "label": "Contact3", "component": "Contact" }
       ]
@@ -102,15 +102,17 @@ const App = () => {
   return (
     <div>
       <Dashboard headers={navHeaders} sidebarItems={newNavItems} handleRenderView={handleRenderView} />
-      <Container maxWidth="sm">
+      <Container maxWidth="false">
         {(() => {
           switch (renderView) {
             case "Home":
               return <Home />;
             case "About":
               return <About />;
+            case "DynamoDB":
+              return <DynamoDB />;
             default:
-              return <Default />;
+              return <DynamoDB />;
           }
         })()
         }

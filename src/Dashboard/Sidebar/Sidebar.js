@@ -2,6 +2,7 @@ const {
   Box,
   Collapse,
   Divider,
+  Icon,
   List,
   ListItem,
   ListItemButton,
@@ -43,7 +44,7 @@ const Sidebar = (props) => {
             <ListItemText primary={item.label} />
           </ListItemButton> :
           <div>
-            <Divider textAlign="left" >{item.label}</Divider>
+            {/* <Divider textAlign="left" >{item.label}</Divider> */}
             <GroupNav label={item.menulabel} items={item.items} handleItemClick={handleItemClick}></GroupNav>
           </div>
         )

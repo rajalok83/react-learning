@@ -1,3 +1,13 @@
+const {
+  Box,
+  Collapse,
+  Divider,
+  Icon,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemButton,
+} = MaterialUI;
 const GroupNav = (props) => {
   const [open, setOpen] = useState(false)
 
@@ -9,9 +19,9 @@ const GroupNav = (props) => {
     <Box>
       <List className="sidebar-listitem">
         <ListItem className="sidebar-listitem">
-          <ListItemButton className="sidebar-listitem" onClick={handleClick}>
+          <ListItemButton className="sidebar-listitem" >
             <ListItemText className="sidebar-listitem" primary={props.label} />
-            {open ? <Icon>expand_less</Icon> : <Icon>expand_more</Icon>}
+            {open ? <Icon onClick={handleClick} >expand_less</Icon> : <Icon onClick={handleClick}>expand_more</Icon>}
           </ListItemButton>
         </ListItem>
       </List>
@@ -25,7 +35,7 @@ const GroupNav = (props) => {
                 </ListItemIcon> */}
                 <ListItemText className="sidebar-listitem" primary={item.label} />
               </ListItemButton> : <div>
-                <Divider textAlign="left" >{item.label}</Divider>
+                {/* <Divider textAlign="left" >{item.label}</Divider> */}
                 <GroupNav label={item.menulabel} items={item.items} handleItemClick={props.handleItemClick}></GroupNav>
               </div>
             )
