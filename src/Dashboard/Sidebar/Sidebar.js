@@ -43,10 +43,7 @@ const Sidebar = (props) => {
             </ListItemIcon>
             <ListItemText primary={item.label} />
           </ListItemButton> :
-          <div>
-            {/* <Divider textAlign="left" >{item.label}</Divider> */}
-            <GroupNav label={item.menulabel} items={item.items} handleItemClick={handleItemClick}></GroupNav>
-          </div>
+          <GroupNav label={item.menulabel} items={item.items} handleItemClick={handleItemClick}></GroupNav>
         )
       ))}
     </Box>

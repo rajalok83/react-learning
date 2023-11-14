@@ -1,9 +1,9 @@
 const { TextField } = MaterialUI;
 
 const DynamoDBTblField = () => {
-    return (
-        <Box>
-            <TextField>Something</TextField>
-        </Box>
-    )
+  return (
+    <Box>
+      <TextField>Something</TextField>
+    </Box>
+  )
 }

@@ -42,38 +42,22 @@ const Contact = () => {
   )
 };
 
-let newNavItems = [
+let navItems = [
   {
-    "type": "g", "label": "New Label1 - 1", "menulabel": "Label1-1", "items":
-      [
-        { "type": "i", "label": "Home", "component": "Home" },
-        { "type": "i", "label": "About", "component": "About" },
-        { "type": "i", "label": "Contact", "component": "Contact" },
-        {
-          "type": "g", "label": "New Label2- 1", "menulabel": "Label2-1", "items":
-            [
-              { "type": "i", "label": "Home2", "component": "Home" },
-              { "type": "i", "label": "About2", "component": "About" },
-              { "type": "i", "label": "Contact2", "component": "Contact" }
-            ]
-        }
-      ]
-  },
-  {
-    "type": "g", "label": "AWS", "menulabel": "AWSLabel1-2", "items":
+    "type": "g", "label": "AWS", "menulabel": "AWS", "items":
       [
         { "type": "i", "label": "DynamoDB", "component": "DynamoDB" },
-        { "type": "i", "label": "About3", "component": "About" },
-        { "type": "i", "label": "Contact3", "component": "Contact" }
+        // { "type": "i", "label": "About3", "component": "About" },
+        // { "type": "i", "label": "Contact3", "component": "Contact" }
       ]
   }
   ,
   { "type": "i", "label": "About", "component": "About" }
 ]
 
-let navItems = ["Home"
-  , "About", "Contact"
-];
+// let navItems = ["Home"
+//   , "About", "Contact"
+// ];
 
 let navHeaders = ["TCO"];
 
@@ -101,7 +85,7 @@ const App = () => {
 
   return (
     <div>
-      <Dashboard headers={navHeaders} sidebarItems={newNavItems} handleRenderView={handleRenderView} />
+      <Dashboard headers={navHeaders} sidebarItems={navItems} handleRenderView={handleRenderView} />
       <Container maxWidth="false">
         {(() => {
           switch (renderView) {
