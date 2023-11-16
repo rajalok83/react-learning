@@ -1,5 +1,5 @@
-const { Box } = MaterialUI;
-
+const { 
+  Box } = MaterialUI
 
 const DynamoDBInfo = (props) => {
   return <Box>

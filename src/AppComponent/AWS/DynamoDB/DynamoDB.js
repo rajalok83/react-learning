@@ -7,17 +7,26 @@ const {
   SpeedDialAction,
   SpeedDialIcon,
   Typography } = MaterialUI
-
 const {
   useState
 } = React
 
 const DynamoDB = (props) => {
-  const [open, setOpen] = useState(false);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState(false);
-  const [severity, setSeverity] = useState(false);
-  const [tbls, setTbls] = useState([{ 'name': 'Something', 'desc': 'somedesc', 'columns': [{ 'name': 'alok', "size": 100, "ispart": true }] }]);
+  const [open, setOpen] = useState(false)
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+  const [snackbarMessage, setSnackbarMessage] = useState(false)
+  const [severity, setSeverity] = useState(false)
+  const [tbls, setTbls] = useState({})
+  const columnsHeader = [{ "label": "Name", "type": "text", "key": "name" },
+  { "label": "Datatype", "type": "list", "key": "type", "options": ["Number", "Boolean", "Text"] },
+  { "label": "Size(Bytes)", "type": "number", "key": "size" },
+  { "label": "Partition Key", "type": "boolean", "key": "ispart" },
+  { "label": "Sort Key", "type": "boolean", "key": "issort" },
+  { "label": "LSI", "type": "boolean", "key": "islsi" },
+  { "label": "GSI", "type": "boolean", "key": "isgsi" },
+  { "label": "Operation" }
+  ]
+
   // let handleExport = () => {
 
   // }
@@ -32,22 +41,22 @@ const DynamoDB = (props) => {
     setOpen(!open)
   }
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
+  // const handleClose = (event, reason) => {
+  //   if (reason === 'clickaway') {
+  //     return
+  //   }
+  //   setOpen(false)
+  // }
 
   const handleCloseSnackbar = (event, reason) => {
-    setOpenSnackbar(false);
-  };
-
+    setOpenSnackbar(false)
+  }
 
   const onTblAdd = (inNewTbl) => {
     if (inNewTbl.name !== "") {
-      setTbls([...tbls, inNewTbl])
-      setSnackbarMessage("Table " + inNewTbl.name + " added to the list")
+      tbls[inNewTbl["name"]] = { "desc": inNewTbl["desc"], "columns": inNewTbl["columns"] }
+      setTbls(tbls)
+      setSnackbarMessage("Table " + inNewTbl["name"] + " added to the list")
       setSeverity("success")
     }
     else {
@@ -55,6 +64,24 @@ const DynamoDB = (props) => {
       setSnackbarMessage("Table name cannot be blank")
       setSeverity("error")
     }
+  }
+
+  const onTblDrop = (inTbl) => {
+    console.log("Dropping table")
+    delete tbls[inTbl]
+    setTbls({ ...tbls })
+  }
+
+  const onColAdd = (inTbl) => {
+    console.log("Adding column")
+    tbls[inTbl]["columns"]["NewColumn"] = {}
+    setTbls({ ...tbls })
+  }
+
+  const onColDrop = (inTbl, inCol) => {
+    console.log("Dropping column")
+    delete tbls[inTbl]["columns"][inCol]
+    setTbls({ ...tbls })
   }
 
   const actions = [
@@ -92,7 +119,7 @@ const DynamoDB = (props) => {
           />
         ))}
       </SpeedDial>
-      <DynamoDBTblList tbls={tbls}></DynamoDBTblList>
+      <DynamoDBTblList columnsHeader={columnsHeader} tbls={tbls} onTblDrop={onTblDrop} onColDrop={onColDrop} onColAdd={onColAdd}></DynamoDBTblList>
       <DynamoDBInfo></DynamoDBInfo>
     </Box>
   )

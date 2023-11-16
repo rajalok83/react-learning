@@ -14,22 +14,17 @@ const DynamoDBNewTable = (props) => {
   const [open, setOpen] = useState(props.isOpenModal)
   const tblNmRef = useRef()
   const tblDescRef = useRef()
+  
   const handleClose = () => {
     props.onClose(!open)
     setOpen(!open)
-    console.log("Close")
+    // console.log("Close")
   }
 
   const handleAddTable = (e) => {
     e.preventDefault()
-    console.log("Clicked Add Table")
-
-    console.log(tblNmRef.current.value)
-    console.log(tblDescRef.current.value)
-
-    props.onTblAdd({ 'name': tblNmRef.current.value, 'desc': tblDescRef.current.value })
+    props.onTblAdd({ 'name': tblNmRef.current.value, 'desc': tblDescRef.current.value, 'columns': {} })
     handleClose()
-
   }
 
   return (

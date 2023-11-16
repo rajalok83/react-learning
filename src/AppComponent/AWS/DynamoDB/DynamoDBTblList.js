@@ -1,9 +1,8 @@
 const DynamoDBTblList = (props) => {
-  console.log(props)
   return (
-    props.tbls.map((tbl) => {
+    Object.keys(props.tbls).map((tbl) => {
       return (
-        <DynamoDBTbl tbl={tbl}></DynamoDBTbl>
+        <DynamoDBTbl columnsHeader={props.columnsHeader} tblnm={tbl} tbl_dtl={props.tbls[tbl]} onTblDrop={props.onTblDrop} onColDrop={props.onColDrop} onColAdd={props.onColAdd}></DynamoDBTbl>
       )
     })
   )
