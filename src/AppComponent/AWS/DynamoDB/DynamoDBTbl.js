@@ -1,9 +1,10 @@
 const {
+  Button,
   Card,
   CardContent,
   CardHeader,
+  Divider,
   Icon,
-  ListItemButton,
   Typography
 } = MaterialUI;
 const { useState } = React;
@@ -30,40 +31,73 @@ const DynamoDBTbl = (props) => {
     return mmmm + ' ' + dd + ', ' + yyyy + ' ' + hour + ':' + minu;
   }
 
-  const handleExpandClick = () => {
+  const handleAddColumn = () => {
+    console.log(props)
+    console.log("Column Add clicked");
+    let add = true;
+    props.tbl.columns.forEach(element => {
+      console.log(element.name)
+      if (typeof element.name == "undefined")
+        add = false;
+    });
+    if (add)
+      props.tbl.columns = [...props.tbl.columns, {}]
+  }
+
+  const handleExpand = () => {
     setExpanded(!expanded)
   }
+  console.log(props)
   return (
-    props.tbls.map((tbl) => {
-      return (
-        < Card >
-          <CardHeader style={{ backgroundColor: "fdffb6" }}
-            action={
-              <ListItemButton sx={{ pl: 4 }} expand={expanded}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more" className="sidebar-listitem" justifyContent="flex-end">
-                <Icon justifyContent="flex-end" >expand_more</Icon>
-              </ListItemButton>
-            }
-            title={tbl.name}
-            subheader={getFormattedDate(typeof tbl.dt !== 'undefined' ? tbl.dt : (new Date()))}
-          />
-          <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              {tbl.desc}
-            </Typography>
-          </CardContent>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <Typography paragraph>Details:</Typography>
-              <Typography paragraph>
+    < Card >
+      <CardHeader style={{ backgroundColor: "fdffb6" }}
+        action={
+          <ListItemButton sx={{ pl: 4 }} expand={expanded}
+            onClick={handleExpand}
+            aria-expanded={expanded}
+            aria-label="show more" className="sidebar-listitem" justifyContent="flex-end">
+            <Icon justifyContent="flex-end" >expand_more</Icon>
+          </ListItemButton>
+          // <ButtonGroup variant="contained" aria-label="outlined primary button group" >
+          //   <div>
+          //     <Button variant="contained"
+          //       onClick={handleAddColumn}
+          //       aria-label="add column"
+          //     >Add Column</Button>
+          //     <Button variant="contained" expand={expanded}
+          //       onClick={handleExpand}
+          //       aria-expanded={expanded}
+          //       aria-label="show more" className="sidebar-listitem" justifyContent="flex-end"><Icon justifyContent="flex-end" >expand_more</Icon></Button>
+          //   </div>
+          // </ButtonGroup>
+        }
+        title={props.tbl.name}
+        subheader={getFormattedDate(typeof props.tbl.dt !== 'undefined' ? props.tbl.dt : (new Date()))}
+      />
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          {props.tbl.desc}
+        </Typography>
+      </CardContent>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography paragraph>Columns:</Typography>
+          <Divider variant="h4"></Divider>
+          <Typography paragraph></Typography>
+          <Typography paragraph justifyContent="center">
+            <DynamoDBTblColList columns={props.tbl.columns}></DynamoDBTblColList>
+            <Button variant="contained"
+              onClick={handleAddColumn}
+              aria-label="add column"
+              justifyContent="center"
+            >Add Column</Button>
+          </Typography>
+          <Typography paragraph>Details:</Typography>
+          <Typography paragraph>
 
-              </Typography>
-            </CardContent>
-          </Collapse>
-        </Card >
-      )
-    })
+          </Typography>
+        </CardContent>
+      </Collapse>
+    </Card >
   )
 }

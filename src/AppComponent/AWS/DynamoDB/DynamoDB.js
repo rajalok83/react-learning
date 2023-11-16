@@ -17,7 +17,7 @@ const DynamoDB = (props) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState(false);
   const [severity, setSeverity] = useState(false);
-  const [tbls, setTbls] = useState([{ 'name': 'Something', 'desc': 'somedesc' }]);
+  const [tbls, setTbls] = useState([{ 'name': 'Something', 'desc': 'somedesc', 'columns': [{ 'name': 'alok', "size": 100, "ispart": true }] }]);
   // let handleExport = () => {
 
   // }
@@ -38,6 +38,11 @@ const DynamoDB = (props) => {
     }
     setOpen(false);
   };
+
+  const handleCloseSnackbar = (event, reason) => {
+    setOpenSnackbar(false);
+  };
+
 
   const onTblAdd = (inNewTbl) => {
     if (inNewTbl.name !== "") {
@@ -62,8 +67,8 @@ const DynamoDB = (props) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       {open && <DynamoDBNewTable isOpenModal={open} onClose={setOpen} onTblAdd={onTblAdd}></DynamoDBNewTable>}
-      {openSnackbar && <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+      {openSnackbar && <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={severity} sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>}
@@ -87,7 +92,7 @@ const DynamoDB = (props) => {
           />
         ))}
       </SpeedDial>
-      <DynamoDBTbl tbls={tbls}></DynamoDBTbl>
+      <DynamoDBTblList tbls={tbls}></DynamoDBTblList>
       <DynamoDBInfo></DynamoDBInfo>
     </Box>
   )
