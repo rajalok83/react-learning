@@ -1,11 +1,11 @@
-const { MenuItem, 
-  Select, 
-  Switch, 
-  TextField, 
-  TableCell, 
-  TableRow, 
-  ButtonGroup, 
-  Button, 
+const { MenuItem,
+  Select,
+  Switch,
+  TextField,
+  TableCell,
+  TableRow,
+  ButtonGroup,
+  Button,
   Icon } = MaterialUI
 
 const DynamoDBTblCol = (props) => {
@@ -20,7 +20,7 @@ const DynamoDBTblCol = (props) => {
       key={props.columnnm}
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
     >
-      {columnsHeader.map((columnHeader) => (
+      {props.columns.map((columnHeader) => (
         columnHeader.label != "Operation" &&
         <TableCell align={columnHeader.type == "number" ? "right" : "left"}>
           {(columnHeader.type == "text" || columnHeader.type == "number") && <TextField component="th" scope="row" defaultValue={columnHeader.key == "name" ? props.columnnm : props.column_dtl[columnHeader.key]}>
