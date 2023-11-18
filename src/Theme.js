@@ -1,7 +1,7 @@
 const {
   colors,
   createTheme
-} = MaterialUI;
+} = MaterialUI
 
 
 // Create a theme instance.
@@ -17,4 +17,4 @@ const theme = createTheme({
       main: colors.red.A400,
     },
   },
-});
+})

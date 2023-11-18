@@ -7,13 +7,18 @@ const {
   ListItem,
   ListItemText,
   ListItemButton,
-} = MaterialUI;
+} = MaterialUI
+
+const {
+  useState
+} = React
+
 const GroupNav = (props) => {
   const [open, setOpen] = useState(false)
 
   const handleClick = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
   return (
     <Box>

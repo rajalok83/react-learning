@@ -2,9 +2,11 @@ const {
   Box,
   Container,
   Typography
-} = MaterialUI;
+} = MaterialUI
 
-const { useState } = React;
+const { 
+  useState 
+} = React
 
 const Home = () => {
   return (
@@ -16,7 +18,7 @@ const Home = () => {
       <Copyright />
     </Box>
   )
-};
+}
 
 const About = () => {
   return (
@@ -28,7 +30,7 @@ const About = () => {
       <Copyright />
     </Box>
   )
-};
+}
 
 const Contact = () => {
   return (
@@ -40,7 +42,7 @@ const Contact = () => {
       <Copyright />
     </Box>
   )
-};
+}
 
 let navItems = [
   {
@@ -57,9 +59,9 @@ let navItems = [
 
 // let navItems = ["Home"
 //   , "About", "Contact"
-// ];
+// ]
 
-let navHeaders = ["TCO"];
+let navHeaders = ["TCO"]
 
 const Default = () => {
   return (
@@ -71,17 +73,17 @@ const Default = () => {
       <Copyright />
     </Box>
   )
-};
+}
 
 const App = () => {
-  const [renderView, setRenderView] = useState("Default");
+  const [renderView, setRenderView] = useState("Default")
 
   const handleRenderView = (e) => {
-    console.log(e);
+    console.log(e)
     if (e !== "noview")
-      setRenderView(e);
-    console.log(renderView);
-  };
+      setRenderView(e)
+    console.log(renderView)
+  }
 
   return (
     <div>
@@ -90,17 +92,17 @@ const App = () => {
         {(() => {
           switch (renderView) {
             case "Home":
-              return <Home />;
+              return <Home />
             case "About":
-              return <About />;
+              return <About />
             case "DynamoDB":
-              return <DynamoDB />;
+              return <DynamoDB />
             default:
-              return <DynamoDB />;
+              return <DynamoDB />
           }
         })()
         }
       </Container>
     </div>
-  );
-};
+  )
+}

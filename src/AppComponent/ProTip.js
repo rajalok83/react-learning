@@ -1,4 +1,7 @@
-const { Link, Typography } = MaterialUI;
+const {
+  Link,
+  Typography 
+} = MaterialUI
 
 const ProTip = () => {
   return (
@@ -8,5 +11,5 @@ const ProTip = () => {
       <Link href="https://mui.com/material-ui/getting-started/templates/">templates</Link>
       {' in the Material UI documentation.'}
     </Typography>
-  );
-};
+  )
+}

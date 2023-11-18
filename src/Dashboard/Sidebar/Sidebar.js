@@ -9,20 +9,23 @@ const {
   ListItemIcon,
   ListItemText,
   Typography
-} = MaterialUI;
-const { useState } = React;
+} = MaterialUI
+
+const { 
+  useState 
+} = React
 
 const Sidebar = (props) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   let handleItemClick = (e) => {
-    props.handleRenderView(e);
-    props.handleDrawerToggle();
+    props.handleRenderView(e)
+    props.handleDrawerToggle()
   }
 
   const handleClick = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
   return (
     <Box
