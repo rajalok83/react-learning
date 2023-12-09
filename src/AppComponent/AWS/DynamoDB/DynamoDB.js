@@ -6,13 +6,15 @@ const {
   SpeedDial,
   SpeedDialAction,
   SpeedDialIcon,
-  Typography } = MaterialUI
+  Typography 
+} = MaterialUI
 const {
-  useState
+  useState 
 } = React
 
 const DynamoDB = (props) => {
-  const [open, setOpen] = useState(false)
+  const [newOpen, setNewOpen] = useState(false)
+  const [importOpen, setImportOpen] = useState(false)
   const [openSnackbar, setOpenSnackbar] = useState(false)
   const [snackbarMessage, setSnackbarMessage] = useState(false)
   const [severity, setSeverity] = useState(false)
@@ -20,25 +22,33 @@ const DynamoDB = (props) => {
   const columnsHeader = [{ "label": "Name", "type": "text", "key": "name" },
   { "label": "Datatype", "type": "list", "key": "type", "options": ["Number", "Boolean", "Text"] },
   { "label": "Size(Bytes)", "type": "number", "key": "size" },
-  { "label": "Partition Key", "type": "boolean", "key": "ispart" },
-  { "label": "Sort Key", "type": "boolean", "key": "issort" },
+  { "label": "PKey", "type": "boolean", "key": "ispart", "tooltip": { "header": "Partition Key", "desc": "This is must to be able to query the data easily, only one partition key per table is allowed. This generally represents a collection of records with same value in this column" } },
+  { "label": "SKey", "type": "boolean", "key": "issort", "tooltip": { "header": "Sort Key", "desc": "This column is used to identify a record uniquely within a partition" } },
   { "label": "LSI", "type": "boolean", "key": "islsi" },
-  { "label": "GSI", "type": "boolean", "key": "isgsi" },
-  { "label": "Operation" }
+  { "label": "GSI", "type": "boolean", "key": "isgsi" }
+    // ,
+    // { "label": "Operation" }
   ]
 
-  // let handleExport = () => {
+  let handleExport = () => {
+    console.log(JSON.stringify(tbls, null, 2))
+    var dlAnchorElem = document.createElement('a');
+    // let dlAnchorElem = document.getElementById('downloadAnchorElem');
+    dlAnchorElem.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tbls, null, 2)));
+    dlAnchorElem.setAttribute("download", "dynamomodel.json");
+    dlAnchorElem.click();
+  }
 
-  // }
-
-  // let handleImport = () => { }
+  let handleImport = () => {
+    setImportOpen(!importOpen)
+  }
 
   // let handleShare = () => { }
 
   // let handlePrint = () => { }
 
   let handleCreate = () => {
-    setOpen(!open)
+    setNewOpen(!newOpen)
   }
 
   // const handleClose = (event, reason) => {
@@ -54,7 +64,8 @@ const DynamoDB = (props) => {
 
   const onTblAdd = (inNewTbl) => {
     if (inNewTbl.name !== "") {
-      tbls[inNewTbl["name"]] = { "desc": inNewTbl["desc"], "columns": inNewTbl["columns"] }
+      // tbls[inNewTbl["name"]] = { "desc": inNewTbl["desc"], "columns": inNewTbl["columns"] }
+      tbls[inNewTbl["name"]] = { "desc": inNewTbl["desc"], "columns": inNewTbl["columns"], "dt": (new Date()) }
       setTbls(tbls)
       setSnackbarMessage("Table " + inNewTbl["name"] + " added to the list")
       setSeverity("success")
@@ -74,7 +85,27 @@ const DynamoDB = (props) => {
 
   const onColAdd = (inTbl) => {
     console.log("Adding column")
-    tbls[inTbl]["columns"]["NewColumn"] = {}
+    // console.log({ ...tbls })
+    tbls[inTbl]["columns"]["NewColumn"] = {
+      "type": "Number", "size": 1
+    }
+    // console.log({ ...tbls })
+    setTbls({ ...tbls })
+  }
+
+  const onColChange = (typ, inTbl, inCol, newVal) => {
+    console.log("Change column")
+    // console.log("Before:" + JSON.stringify(tbls))
+    switch (typ) {
+      case "name":
+        if (inCol !== newVal) {
+          tbls[inTbl]["columns"][newVal] = tbls[inTbl]["columns"][inCol]
+          onColDrop(inTbl, inCol)
+        }
+        break
+      default:
+        tbls[inTbl]["columns"][inCol][typ] = newVal
+    }
     setTbls({ ...tbls })
   }
 
@@ -86,14 +117,15 @@ const DynamoDB = (props) => {
 
   const actions = [
     { icon: <Icon>create</Icon>, name: 'Add Table', onClick: handleCreate },
-    // { icon: <Icon>file_upload</Icon>, name: 'Import' },
-    // { icon: <Icon>file_download</Icon>, name: 'Export' },
+    { icon: <Icon>file_upload</Icon>, name: 'Import', onClick: handleImport },
+    { icon: <Icon>file_download</Icon>, name: 'Export', onClick: handleExport },
     // { icon: <Icon>print</Icon>, name: 'Print' },
     // { icon: <Icon>share</Icon>, name: 'Share' },
   ]
   return (
     <Box sx={{ flexGrow: 1 }}>
-      {open && <DynamoDBNewTable isOpenModal={open} onClose={setOpen} onTblAdd={onTblAdd}></DynamoDBNewTable>}
+      {newOpen && <DynamoDBNewTable isOpenModal={newOpen} onClose={setNewOpen} onTblAdd={onTblAdd}></DynamoDBNewTable>}
+      {importOpen && <DynamoDBImport isOpenModal={importOpen} onClose={setImportOpen} onImport={setTbls}></DynamoDBImport>}
       {openSnackbar && <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity={severity} sx={{ width: '100%' }}>
           {snackbarMessage}
@@ -119,7 +151,7 @@ const DynamoDB = (props) => {
           />
         ))}
       </SpeedDial>
-      <DynamoDBTblList columnsHeader={columnsHeader} tbls={tbls} onTblDrop={onTblDrop} onColDrop={onColDrop} onColAdd={onColAdd}></DynamoDBTblList>
+      <DynamoDBTblList columnsHeader={columnsHeader} tbls={tbls} onTblDrop={onTblDrop} onColDrop={onColDrop} onColAdd={onColAdd} onColChange={onColChange}></DynamoDBTblList>
       <DynamoDBInfo></DynamoDBInfo>
     </Box>
   )

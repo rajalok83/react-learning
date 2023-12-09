@@ -8,11 +8,15 @@ const {
   Icon,
   Typography
 } = MaterialUI
-const { useState } = React
+const {
+  useState
+} = React
 
 const DynamoDBTbl = (props) => {
-  const [expanded, setExpanded] = useState(false)
+  const [expandedTbl, setExpandedTbl] = useState(false)
+  const [expandedCol, setExpandedCol] = useState(true)
   const [columns, setColumns] = useState(props.tbl_dtl["columns"])
+  console.log(props.tbl_dtl)
 
   function getFormattedDate(today) {
     let month = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December')
@@ -38,24 +42,28 @@ const DynamoDBTbl = (props) => {
     props.onColAdd(props.tblnm)
   }
 
-  const handleExpand = () => {
-    setExpanded(!expanded)
+  const handleExpandTbl = () => {
+    setExpandedTbl(!expandedTbl)
+  }
+
+  const handleExpandCol = () => {
+    setExpandedCol(!expandedCol)
   }
 
   return (
     < Card >
       <CardHeader style={{ backgroundColor: "fdffb6" }}
         action={
-          <ListItem>
+          <ListItem justifyContent="flex-end">
             <Button variant="contained"
               onClick={() => handleDropTable(props.tblnm)}
               aria-label="drop table"
               color="error"
-            ><Icon>delete_forever</Icon>Drop Table</Button>
-            <ListItemButton sx={{ pl: 4 }} expand={expanded}
-              onClick={handleExpand}
-              aria-expanded={expanded}
-              aria-label="show more" className="sidebar-listitem" justifyContent="flex-end">
+            ><Icon>delete_forever</Icon></Button>
+            <ListItemButton sx={{}} expand={expandedTbl}
+              onClick={handleExpandTbl}
+              aria-expanded={expandedTbl}
+              aria-label="show more" className="sidebar-listitem">
               <Icon justifyContent="flex-end" >expand_more</Icon>
             </ListItemButton>
           </ListItem>
@@ -65,37 +73,104 @@ const DynamoDBTbl = (props) => {
           //       onClick={handleAddColumn}
           //       aria-label="add column"
           //     >Add Column</Button>
-          //     <Button variant="contained" expand={expanded}
-          //       onClick={handleExpand}
-          //       aria-expanded={expanded}
+          //     <Button variant="contained" expand={expandedTbl}
+          //       onClick={handleExpandTbl}
+          //       aria-expanded={expandedTbl}
           //       aria-label="show more" className="sidebar-listitem" justifyContent="flex-end"><Icon justifyContent="flex-end" >expand_more</Icon></Button>
           //   </div>
           // </ButtonGroup>
         }
         title={props.tblnm}
-        subheader={getFormattedDate(typeof props.tbl_dtl["dt"] !== 'undefined' ? props.tbl_dtl["dt"] : (new Date()))}
+        subheader={getFormattedDate(typeof props.tbl_dtl["dt"] !== 'undefined' ? (new Date(props.tbl_dtl["dt"])) : (new Date()))}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {props.tbl_dtl["desc"]}
         </Typography>
       </CardContent>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse in={expandedTbl} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography variant="h6">Columns:</Typography>
+          <Table justifyContent="flex-end">
+            <TableCell>
+              <Typography variant="h6">Columns:</Typography>
+            </TableCell>
+            <TableCell>
+              <ListItem justifyContent="flex-end">
+                <ListItem></ListItem>
+                <ListItemButton sx={{
+                  display: 'flex',
+                  flexDirection: 'row-reverse'
+                }} expand={expandedCol} justifyContent="flex-end"
+                  onClick={handleExpandCol}
+                  aria-expanded={expandedCol}
+                  aria-label="show more" className="sidebar-listitem">
+                  <Icon justifyContent="flex-end" >expand_more</Icon>
+                </ListItemButton>
+              </ListItem>
+            </TableCell>
+
+          </Table>
           <Divider variant="h4"></Divider>
           <Typography paragraph></Typography>
-          <Typography paragraph justifyContent="center">
-            <DynamoDBTblColList columnsHeader={props.columnsHeader} columns={columns} tblnm={props.tblnm} onColDrop={props.onColDrop}></DynamoDBTblColList>
-            <Button variant="contained"
-              onClick={handleAddColumn}
-              aria-label="add column"
-              justifyContent="center"
-            >Add Column</Button>
-          </Typography>
+          <Collapse in={expandedCol} timeout="auto" unmountOnExit>
+            <Typography paragraph justifyContent="center">
+              <DynamoDBTblColList columnsHeader={props.columnsHeader} columns={columns} tblnm={props.tblnm} onColDrop={props.onColDrop} onColChange={props.onColChange}></DynamoDBTblColList>
+              <Button variant="contained"
+                onClick={handleAddColumn}
+                aria-label="add column"
+                justifyContent="center"
+              >Add Column</Button>
+            </Typography>
+          </Collapse>
           <Typography variant="h6">Details:</Typography>
           <Typography paragraph>
           </Typography>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+              <TableHead>
+                <TableRow style={{ backgroundColor: "caffd0" }}>
+                  <TableCell>
+                    <Typography variant="h5">{props.tblnm}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6">BySize=></Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6">RCU</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6"></Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6">RCU Batch</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6"></Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6">WCU</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6"></Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6">WCU Batch</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6"></Typography>
+                  </TableCell>
+                </TableRow>
+                <TableRow style={{ backgroundColor: "caffd0" }}>
+                  <TableCell>
+                    {/* <Typography variant="h6">{props.tblnm}</Typography> */}
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6">{props.tblnm}</Typography>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+            </Table>
+          </TableContainer>
         </CardContent>
       </Collapse>
     </Card >

@@ -1,4 +1,6 @@
-const { MenuItem,
+const {
+  Checkbox,
+  MenuItem,
   Select,
   Switch,
   TextField,
@@ -6,13 +8,37 @@ const { MenuItem,
   TableRow,
   ButtonGroup,
   Button,
-  Icon } = MaterialUI
+  Icon 
+} = MaterialUI
+
+const theme = {
+  spacing: 8,
+}
 
 const DynamoDBTblCol = (props) => {
-
+  // console.log(props)
   const handleDeleteMe = (in_table_name, in_column_name) => {
     if (confirm("Are you sure you want to delete column " + in_column_name + " from table " + in_table_name + "?"))
       props.onColDrop(in_table_name, in_column_name)
+  }
+
+  const handleSaveMe = (change, in_table_name, in_column_name, e) => {
+    // console.log(change, in_table_name, in_column_name, e.target.checked)
+    switch (change) {
+      case "name":
+        props.onColChange(change, in_table_name, in_column_name, e.target.value)
+        break
+      case "type":
+      case "size":
+        props.onColChange(change, in_table_name, in_column_name, e.target.value)
+        break
+      case "ispart":
+      case "issort":
+      case "islsi":
+      case "isgsi":
+        props.onColChange(change, in_table_name, in_column_name, e.target.checked)
+        break
+    }
   }
 
   return (
@@ -22,16 +48,38 @@ const DynamoDBTblCol = (props) => {
     >
       {props.columns.map((columnHeader) => (
         columnHeader.label != "Operation" &&
-        <TableCell align={columnHeader.type == "number" ? "right" : "left"}>
-          {(columnHeader.type == "text" || columnHeader.type == "number") && <TextField component="th" scope="row" defaultValue={columnHeader.key == "name" ? props.columnnm : props.column_dtl[columnHeader.key]}>
+        <TableCell padding="none" align={columnHeader.type == "number" ? "right" : "left"}>
+          {(columnHeader.type == "text") && <TextField inputProps={{
+            style: {
+              padding: 5
+            }
+          }} component="th" scope="row" defaultValue={columnHeader.key == "name" ? props.columnnm : props.column_dtl[columnHeader.key]} onBlur={(e) => { handleSaveMe(columnHeader.key, props.tblnm, props.columnnm, e) }}>
+          </TextField>
+          }
+          {(columnHeader.type == "number") && <TextField inputProps={{
+            style: {
+              padding: 5
+            }
+          }} component="th" scope="row" defaultValue={columnHeader.key == "name" ? props.columnnm : props.column_dtl[columnHeader.key]} onBlur={(e) => { handleSaveMe(columnHeader.key, props.tblnm, props.columnnm, e) }} type="number" minimum="1">
           </TextField>
           }
           {
-            columnHeader.type == "boolean" && <Switch checked={props.column_dtl[columnHeader.key]} />
+            columnHeader.type == "boolean" && <Checkbox inputProps={{
+              style: {
+                padding: 5
+              }
+            }}
+              checked={typeof props.column_dtl[columnHeader.key] === 'undefined' ? false : props.column_dtl[columnHeader.key]}
+              onChange={(e) => { handleSaveMe(columnHeader.key, props.tblnm, props.columnnm, e) }}
+            ></Checkbox>
           }
           {
-            columnHeader.type == "list" && <Select style={{ minWidth: 120 }}
-              value={props.column_dtl[columnHeader.key]}
+            columnHeader.type == "list" && <Select sx={{ px: 5 / 8, py: 5 / 8 }} inputProps={{
+              style: {
+                padding: 5
+              }
+            }} style={{ minWidth: 120 }}
+              value={props.column_dtl[columnHeader.key]} onChange={(e) => { handleSaveMe(columnHeader.key, props.tblnm, props.columnnm, e) }}
             >
               {columnHeader.options.map((option) => (<MenuItem value={option}>{option}</MenuItem>))}
 
@@ -44,12 +92,15 @@ const DynamoDBTblCol = (props) => {
               <TableCell align="right">{row.fat}</TableCell>
               <TableCell align="right">{row.carbs}</TableCell>
               <TableCell align="right">{row.protein}</TableCell> */}
-      <TableCell align="left">
+      <TableCell
+        padding="none"
+        align="left">
         <ButtonGroup>
-          <Button onClick={() => { handleDeleteMe(props.tblnm, props.columnnm) }} variant="contained" color="error"><Icon>delete</Icon></Button>
-          <Button onClick={() => { }} variant="contained" color="error"><Icon>lock_open</Icon></Button>
+          <Button sx={{ px: 0.5, py: 0.5 }}
+
+            onClick={() => { handleDeleteMe(props.tblnm, props.columnnm) }} variant="contained" color="error"><Icon>delete</Icon></Button>
         </ButtonGroup>
       </TableCell>
-    </TableRow>
+    </TableRow >
   )
 }

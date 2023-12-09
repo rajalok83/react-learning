@@ -5,16 +5,33 @@ const {
   DialogContent,
   DialogTitle,
   FormGroup,
-  TextField
+  TextField 
 } = MaterialUI
-
-const { useState, useRef } = React
+const {
+  useState,
+  useRef 
+} = React
 
 const DynamoDBNewTable = (props) => {
   const [open, setOpen] = useState(props.isOpenModal)
   const tblNmRef = useRef()
   const tblDescRef = useRef()
-  
+
+  function getFormattedDate(today) {
+    let month = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December')
+    // var day  = week[today.getDay()]
+    var dd = today.getDate()
+    var mmmm = month[today.getMonth()] //January is 0!
+    var yyyy = today.getFullYear()
+    var hour = today.getHours()
+    var minu = today.getMinutes()
+    if (dd < 10) { dd = '0' + dd }
+    // if(mm<10)  { mm='0'+mm } 
+    if (hour < 10) { hour = '0' + hour }
+    if (minu < 10) { minu = '0' + minu }
+    return mmmm + ' ' + dd + ', ' + yyyy + ' ' + hour + ':' + minu
+  }
+
   const handleClose = () => {
     props.onClose(!open)
     setOpen(!open)
@@ -23,7 +40,7 @@ const DynamoDBNewTable = (props) => {
 
   const handleAddTable = (e) => {
     e.preventDefault()
-    props.onTblAdd({ 'name': tblNmRef.current.value, 'desc': tblDescRef.current.value, 'columns': {} })
+    props.onTblAdd({ 'name': tblNmRef.current.value, 'desc': tblDescRef.current.value, 'columns': {}, 'dt': (new Date()) })
     handleClose()
   }
 

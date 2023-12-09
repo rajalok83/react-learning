@@ -3,7 +3,6 @@ const {
   createTheme
 } = MaterialUI
 
-
 // Create a theme instance.
 const theme = createTheme({
   palette: {
