@@ -133,7 +133,7 @@ const DynamoDBTbl = (props) => {
                     <Typography variant="h5">{props.tblnm}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="h6">BySize=></Typography>
+                    <Typography variant="h6">BySize={">"}</Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="h6">RCU</Typography>
