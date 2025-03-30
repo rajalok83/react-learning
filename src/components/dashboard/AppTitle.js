@@ -6,7 +6,7 @@ const AppTitle = (props) => {
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
       <CloudCircleIcon fontSize="large" color="primary" />
-      <Typography variant="h6">Card Cloud DBA Dashboard</Typography>
+      <Typography variant="h6">Dashboard</Typography>
       {/* <Chip size="small" label="BETA" color="info" /> */}
       {/* <Tooltip title="Connected to production">
         <CheckCircleIcon color="success" fontSize="small" />

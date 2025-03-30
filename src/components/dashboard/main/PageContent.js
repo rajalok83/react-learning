@@ -78,14 +78,18 @@ function PageContent(props) {
     console.log("PageContent useEffect", props);
     setContentJSON({});
     let internalContent = {};
+    // console.log(window.location.href.split("/").pop());
     if (props.listReports) {
       props.listReports.forEach((report, index) => {
         console.log("fetching", report);
+        // console.log(window.location.href.split("/"));
+        // console.log(window.location.href.split("/").length);
         let url =
-          window.location.protocol +
-          "//" +
-          window.location.host +
-          "/reports/" +
+          (
+            (window.location.href.split("/").length === 5
+              ? window.location.href.split("/").slice(0, -2).join("/")
+              : window.location.href) + "/reports/"
+          ).replace("//reports", "/reports") +
           report +
           "-" +
           props.selectedDate.$y +
