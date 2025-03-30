@@ -85,11 +85,8 @@ function PageContent(props) {
         // console.log(window.location.href.split("/"));
         // console.log(window.location.href.split("/").length);
         let url =
-          (
-            (window.location.href.split("/").length === 5
-              ? window.location.href.split("/").slice(0, -2).join("/")
-              : window.location.href) + "/reports/"
-          ).replace("//reports", "/reports") +
+          (window.location.href.replace("/dist/index.html", "") +
+          "/reports/").replace("//reports", "/reports") +
           report +
           "-" +
           props.selectedDate.$y +
