@@ -1,8 +1,10 @@
-const root = ReactDOM.createRoot(document.getElementById('root'))
+import React from "react";
+import { createRoot } from "react-dom/client";
+import DashboardLayoutCustom from "./components/dashboard/DashboardLayout.js";
+import { DateProvider } from "./components/dashboard/DateProviderContext.js";
+const root = createRoot(document.getElementById("root"));
 root.render(
-  <ThemeProvider theme={theme}>
-    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-    <CssBaseline />
-    <App />
-  </ThemeProvider>,
-)
+  <DateProvider>
+    <DashboardLayoutCustom></DashboardLayoutCustom>
+  </DateProvider>
+);
